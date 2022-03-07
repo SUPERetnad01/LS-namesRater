@@ -28,7 +28,7 @@
       <div class="row justify-content-md-center pt-4 mb-4">
         <form action="predict">
           <label for="ign" class="form-label">Summoner name</label>
-          <input class="form-control form-control-lg" type="text" placeholder="Your summoner name here" name="ign">
+          <input class="form-control form-control-lg" type="text" id="ign" placeholder="Your summoner name here" name="ign">
 
           <!-- <input type="submit" value="Submit"> -->
           <div class="d-flex justify-content-end my-4">
@@ -40,6 +40,11 @@
     </div>
   </body>
 </html>
+
+<script>
+  const params = new URLSearchParams(window.location.search)
+  document.getElementById('ign').value = params.get('ign');
+</script>
 
 <style>
   .pt-4 {
