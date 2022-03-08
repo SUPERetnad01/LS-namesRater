@@ -1,3 +1,4 @@
+from email import message
 from flask import Flask, render_template, request
 import random
 import pandas as pd
@@ -56,18 +57,29 @@ def extract_letters(name):
 @app.route("/predict", methods=("GET", "POST"))
 def predict_name():
     name = request.args["ign"]
-    print(name)
-    name_ratings = {"name": [], "is_in_dict": [], "name_length": []}
+    name_ratings = {
+        "name": [],
+        "is_in_dict": [],
+        "name_lenght": [],
+        "first_letter_vowle": [],
+        "last_letter_vowle": [],
+    }
     if name is not None:
         name = str(name).lower()
         name_ratings["name"].append(name)
         name_ratings["is_in_dict"].append(name in words.words())
-        name_ratings["name_length"].append(len(name))
+        name_ratings["name_lenght"].append(len(name))
+        name_ratings["first_letter_vowle"].append(name[0] in "aeiuo")
+        name_ratings["last_letter_vowle"].append(name[-1] in "aeiuo")
         df = pd.DataFrame.from_dict(dict(name_ratings, **extract_letters(name)))
         df = df.drop("name", axis=1)
         prediction = rfc.predict(df.values.tolist())
         prediction_message = generate_prediction_message(prediction[0])
-    return render_template("index.html", rating=prediction_message)
+    return render_template(
+        "index.html",
+        rating=f"your rating: {prediction[0]}",
+        message=f"{prediction_message}",
+    )
 
 
 def render():
@@ -99,4 +111,4 @@ def generate_prediction_message(rating):
         ],
     }
 
-    return f"{random.choice(messages[f'{rating}'])} {rating}"
+    return f"{random.choice(messages[f'{rating}'])}"
