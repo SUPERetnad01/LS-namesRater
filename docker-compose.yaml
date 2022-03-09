@@ -1,0 +1,26 @@
+version: '3.7'
+services:
+    rater:
+      build: .
+      container_name: rater
+      restart: on-failure
+      ports:
+        - "5000:5000"
+      networks:
+        - app-network
+
+    web:
+      build: ./web
+      command: "npm run dev"
+      container_name: rater_web
+      volumes:
+        - ./web/src:/usr/app/src
+      restart: on-failure
+      ports:
+        - "5001:80"
+      networks:
+        - app-network
+
+networks:
+   app-network:
+       driver: bridge
