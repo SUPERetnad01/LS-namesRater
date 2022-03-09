@@ -13,8 +13,8 @@ services:
       build: ./web
       command: "npm run dev"
       container_name: rater_web
-      volumes:
-        - ./web/src:/usr/app/src
+      # volumes:
+      #   - ./web/src:/usr/app/src
       restart: on-failure
       ports:
         - "5001:80"
