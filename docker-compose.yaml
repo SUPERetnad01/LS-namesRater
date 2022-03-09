@@ -11,7 +11,7 @@ services:
 
     web:
       build: ./web
-      command: "npm run dev"
+      command: "npm run dev --host"
       container_name: rater_web
       # volumes:
       #   - ./web/src:/usr/app/src
